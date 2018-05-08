@@ -5,23 +5,31 @@
 class Player
 {
 public:
-	Player(const int & = 5);
+	Player(const int & = 15);
 	void Place(const int &, const int &);
 	void Place(const int &, const int &, Square &);
 	void MoveUp();
 	void MoveDown();
 	void MoveLeft();
 	void MoveRight();
+	void MoveY();
+	void MoveU();
+	void MoveB();
+	void MoveN();
+	void Rest();
 	void ShowPlace(const bool & = false);
-	void ShowPoint(const char &, const bool & = false);
 	const int &GetX();
 	const int &GetY();
 	~Player();
 private:
 	int hp;
-	int currentX;
+	int currentX; //¶ÔÓÚÆÁÄ»¶øÑÔ
 	int currentY;
 	void MoveTo(const int, const int);
+	void Hurt(const string &);
+	void ShowAns();
+	bool CheckPlaceForMonster(Point, Point);
+	void CallMonsters();
 	Square *square;
 	
 };

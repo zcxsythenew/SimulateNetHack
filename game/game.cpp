@@ -15,26 +15,56 @@ void StartGame()
 	unsigned long long c = 0;
 	while (status == 0)
 	{
-		for (int i = 0; i < 3; i++)
+		c = _getch();
+		if (c == 27)
 		{
 			c = _getch();
+			if (c == 91)
+			{
+				c = _getch();
+				c -= 65;
+			}
 		}
 		cout << "\033[" << player.GetX() << ";" << player.GetY() << "H";
 		switch (c)
 		{
-		case 65: //up
+		case 0: //up
 			player.MoveUp();
 			break;
-		case 66: //down
+		case 1: //down
 			player.MoveDown();
 			break;
-		case 67: //right
+		case 2: //right
 			player.MoveRight();
 			break;
-		case 68: //left
+		case 3: //left
 			player.MoveLeft();
+			break;
+		case 'y':
+		case 'Y':
+			player.MoveY();
+			break;
+		case 'u':
+		case 'U':
+			player.MoveU();
+			break;
+		case 'b':
+		case 'B':
+			player.MoveB();
+			break;
+		case 'n':
+		case 'N':
+			player.MoveN();
+			break;
+		case '.':
+			player.Rest();
 			break;
 		}
 		//cout << (unsigned long long)c << endl;
+	}
+	if (status == 2)
+	{
+		cout << "\033[" << 2 << ";" << 1 << "H";
+		cout << "Bye." << endl;
 	}
 }

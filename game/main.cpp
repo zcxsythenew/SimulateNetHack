@@ -4,6 +4,27 @@ ifstream initializeFile;
 string username;
 bool fail = false;
 
+void ShowPoint(const char &chr, const bool &gray)
+{
+	if (chr == '&')
+	{
+		cout << "\033[33m";
+	}
+	else if (gray)
+	{
+		cout << "\033[36m";
+	}
+	if (chr == '_')
+	{
+		cout << '.';
+	}
+	else
+	{
+		cout << chr;
+	}
+	cout << "\033[0m";
+}
+
 char _getch()
 {
 	struct termios stored_settings;
@@ -63,6 +84,7 @@ void Initialize()
 			cout << "Hello " << username << "!" << endl;
 			cout << "You are going to find the ring(&)." << endl;
 			cout << "--More--";
+			system("stty -echo");
 			_getch();
 			StartGame();
 		}
@@ -93,7 +115,7 @@ void Initialize()
 
 int main()
 {
-	system("stty -echo");
+	
 	Initialize();
 	system("stty echo");
     return 0;
