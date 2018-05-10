@@ -1,6 +1,6 @@
 #include "Square.h"
 
-Square::Square(const int &x, const int &y, const int &height, const int &width, const int &walls, const int &traps, const int &monsters) : uplimit(y), downlimit(y + height - 1), leftlimit(x), rightlimit(x + width - 1), height(height), width(width)
+Square::Square(const int &x, const int &y, const int &height, const int &width, const int &walls, const int &traps, const int &monsters, const int &helper) : uplimit(y), downlimit(y + height - 1), leftlimit(x), rightlimit(x + width - 1), height(height), width(width)
 {
 	srand(time(NULL));
 	map = new char*[height];
@@ -115,13 +115,13 @@ Square::Square(const int &x, const int &y, const int &height, const int &width, 
 			if (map[i][j] != '#')
 			{
 				tmpWall = CheckWallNum(j, i);
-				if (tmpWall > maxWall && !(i == j && i == 10))
+				if (tmpWall > maxWall && !(i == 5 && j == 9))
 				{
 					maxWall = tmpWall;
 					targetX = j;
 					targetY = i;
 				}
-				else if (tmpWall == maxWall && !(i == j && i == 10) && rand() < (RAND_MAX / 3))
+				else if (tmpWall == maxWall && !(i == 5 && j == 9) && rand() < (RAND_MAX / 3))
 				{
 					maxWall = tmpWall;
 					targetX = j;
@@ -141,9 +141,24 @@ Square::Square(const int &x, const int &y, const int &height, const int &width, 
 	{
 		int x = rand() % width;
 		int y = rand() % height;
-		if (map[y][x] == '.' && !(x == y && x == 10))
+		if (map[y][x] == '.' && !(5 == y && x == 9))
 		{
 			map[y][x] = '_';
+		}
+		else
+		{
+			i--;
+		}
+	}
+
+	//place helpers
+	for (int i = 0; i < helper; i++)
+	{
+		int x = rand() % width;
+		int y = rand() % height;
+		if (map[y][x] == '.' && !(5 == y && x == 9))
+		{
+			map[y][x] = rand() > (RAND_MAX / 2) ? '(' : ')';
 		}
 		else
 		{
@@ -156,7 +171,7 @@ Square::Square(const int &x, const int &y, const int &height, const int &width, 
 	{
 		int x = rand() % width;
 		int y = rand() % height;
-		if (map[y][x] == '.' || map[y][x] == '_')
+		if ((map[y][x] == '.' || map[y][x] == '_') && !(5 == y && x == 9))
 		{
 			monster.push_back(Monster(x + leftlimit, y + uplimit));
 		}
@@ -227,7 +242,7 @@ void Square::DirectionHelper(int &x, int &y, const int &direction)
 bool Square::CheckWallAvailable(int x, int y, const int &direction)
 {
 	DirectionHelper(x, y, direction);
-	if (x == y && x == 10)
+	if (5 == y && x == 9)
 	{
 		return false;
 	}
@@ -287,6 +302,21 @@ void Square::MoveMonster(Monster &m, int x, int y)
 	cout << "\033[" << m.GetY() << ";" << m.GetX() << "H";
 	ShowPoint(map[m.GetY() - uplimit][m.GetX() - leftlimit], true);
 	m.MoveTo(x, y);
+}
+
+void Square::AddMonster(Point avoid)
+{
+	int x, y;
+	while (true)
+	{
+		x = rand() % width;
+		y = rand() % height;
+		if (!(x == avoid.x && y == avoid.y) && (map[y][x] == '.' || map[y][x] == '_'))
+		{
+			monster.push_back(Monster(x + leftlimit, y + uplimit));
+			return;
+		}
+	}
 }
 
 Square::~Square()

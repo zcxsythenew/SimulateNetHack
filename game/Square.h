@@ -5,7 +5,7 @@
 class Square
 {
 public:
-	Square(const int &, const int &, const int &, const int &, const int & = 20, const int & = 15, const int & = 5);
+	Square(const int &, const int &, const int &, const int &, const int & = 20, const int & = 15, const int & = 1, const int & = 100);
 	const int uplimit;
 	const int downlimit;
 	const int leftlimit;
@@ -16,6 +16,7 @@ public:
 	void ShowMonsters();
 	char **GetMap();
 	void MoveMonster(Monster &, int, int);
+	void AddMonster(Point avoid = { 0,0 });
 	~Square();
 
 private:

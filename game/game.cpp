@@ -59,12 +59,16 @@ void StartGame()
 		case '.':
 			player.Rest();
 			break;
+		case 'a':
+		case 'A':
+			player.ApplyDagger();
+			break;
 		}
 		//cout << (unsigned long long)c << endl;
 	}
 	if (status == 2)
 	{
 		cout << "\033[" << 2 << ";" << 1 << "H";
-		cout << "Bye." << endl;
+		cout << "Bye.                              " << endl;
 	}
 }

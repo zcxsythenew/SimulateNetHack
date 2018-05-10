@@ -33,6 +33,11 @@ void Monster::Hurt()
 	hp--;
 }
 
+void Monster::Kill()
+{
+	hp = 0;
+}
+
 void Monster::MoveTo(int x, int y)
 {
 	currentX = x;

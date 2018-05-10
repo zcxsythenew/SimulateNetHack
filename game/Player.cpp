@@ -1,6 +1,6 @@
 #include "Player.h"
 
-Player::Player(const int &hp) : hp(hp), currentX(0), currentY(0), square(NULL)
+Player::Player(const int &hp) : hp(hp), moves(0), currentX(0), currentY(0), dagger(0), medicalAid(0), square(NULL)
 {
 
 }
@@ -121,6 +121,92 @@ void Player::Rest()
 	MoveTo(currentX, currentY);
 }
 
+void Player::ApplyDagger()
+{
+	if (dagger > 0)
+	{
+		int targetX;
+		int targetY;
+		cout << "\033[" << 2 << ";" << 1 << "H";
+		cout << "                             ";
+		cout << "\033[" << 2 << ";" << 1 << "H";
+		cout << "In what direction? ";
+		char c = _getch();
+		if (c == 27)
+		{
+			c = _getch();
+			if (c == 91)
+			{
+				c = _getch();
+				c -= 65;
+			}
+		}
+		switch (c)
+		{
+		case 0: //up
+			targetX = currentX;
+			targetY = currentY - 1;
+			break;
+		case 1: //down
+			targetX = currentX;
+			targetY = currentY + 1;
+			break;
+		case 2: //right
+			targetX = currentX + 1;
+			targetY = currentY;
+			break;
+		case 3: //left
+			targetX = currentX - 1;
+			targetY = currentY;
+			break;
+		case 'y':
+		case 'Y':
+			targetX = currentX - 1;
+			targetY = currentY - 1;
+			break;
+		case 'u':
+		case 'U':
+			targetX = currentX + 1;
+			targetY = currentY - 1;
+			break;
+		case 'b':
+		case 'B':
+			targetX = currentX - 1;
+			targetY = currentY + 1;
+			break;
+		case 'n':
+		case 'N':
+			targetX = currentX + 1;
+			targetY = currentY + 1;
+			break;
+		default:
+			cout << "\033[" << 2 << ";" << 1 << "H";
+			cout << "Invalid option.          ";
+			cout << "\033[" << currentY << ";" << currentX << "H";
+			return;
+			break;
+		}
+		for (list<Monster>::iterator i = square->monster.begin(); i != square->monster.end(); i++)
+		{
+			if (i->GetX() == targetX && i->GetY() == targetY && i->IsAlive())
+			{
+				dagger--;
+				i->Kill();
+				cout << "\033[" << 2 << ";" << 1 << "H";
+				cout << "The monster is killed.";
+				ShowPlace();
+				square->ShowMonsters();
+				ShowTools();
+				cout << "\033[" << currentY << ";" << currentX << "H";
+				return;
+			}
+		}
+		cout << "\033[" << 2 << ";" << 1 << "H";
+		cout << "Monsters not found.          ";
+		cout << "\033[" << currentY << ";" << currentX << "H";
+	}
+}
+
 void Player::ShowPlace(const bool &gray)
 {
 	if (currentY - 1 >= square->uplimit)
@@ -222,6 +308,12 @@ void Player::MoveTo(const int x, const int y)
 		break;
 	case '_':
 	case '^':
+		if (medicalAid > 0)
+		{
+			medicalAid--;
+			hp++;
+			ShowTools();
+		}
 		cout << "\033[" << 1 << ";" << 1 << "H";
 		Hurt("You are caught by a trap!");
 		ShowPlace(true);
@@ -231,6 +323,18 @@ void Player::MoveTo(const int x, const int y)
 		CallMonsters();
 		square->ShowMonsters();
 		square->GetMap()[y - square->uplimit][x - square->leftlimit] = '^';
+		cout << "\033[" << currentY << ";" << currentX << "H";
+		break;
+	case '(':
+	case ')':
+		ShowTools(square->GetMap()[y - square->uplimit][x - square->leftlimit]);
+		square->GetMap()[y - square->uplimit][x - square->leftlimit] = '.';
+		ShowPlace(true);
+		currentX = x;
+		currentY = y;
+		Place(currentX, currentY);
+		CallMonsters();
+		square->ShowMonsters();
 		cout << "\033[" << currentY << ";" << currentX << "H";
 		break;
 	default:
@@ -257,6 +361,25 @@ void Player::Hurt(const string &tip)
 	}
 }
 
+void Player::ShowTools(char chr)
+{
+	cout << "\033[" << 30 << ";" << 1 << "H";
+	if (chr == '(')
+	{
+		dagger++;
+		cout << "You got a new dagger!     " << endl;
+	}
+	else if(chr == ')')
+	{
+		medicalAid++;
+		cout << "You got a medical aid!     " << endl;
+	}
+	cout << "\033[" << 31 << ";" << 1 << "H";
+	cout << "You now have: " << endl;
+	cout << dagger << " daggers - You can use it to kill monsters by the probability of 100%.  " << endl << "    Press 'a' to apply it." << endl;
+	cout << medicalAid << " medical aids - Your HP will recover after you're caught by a trap.  " << endl << "    It will be automatically used." << endl;
+}
+
 void Player::ShowAns()
 {
 	cout << "\033[" << square->tY + square->uplimit << ";" << square->tX + square->leftlimit << "H";
@@ -267,7 +390,7 @@ bool Player::CheckPlaceForMonster(Point newPoint, Point oldPoint)
 {
 		int mapy = newPoint.y - square->uplimit;
 		int mapx = newPoint.x - square->leftlimit;
-		if (square->GetMap()[mapy][mapx] == '.' || square->GetMap()[mapy][mapx] == '_' || square->GetMap()[mapy][mapx] == '^')
+		if (square->GetMap()[mapy][mapx] == '.' || square->GetMap()[mapy][mapx] == '_' || square->GetMap()[mapy][mapx] == '^' || square->GetMap()[mapy][mapx] == '(' || square->GetMap()[mapy][mapx] == ')')
 		{
 			for (list<Monster>::iterator i = square->monster.begin(); i != square->monster.end(); i++)
 			{
@@ -378,6 +501,12 @@ void Player::CallMonsters()
 				}
 			}
 		}
+	}
+	moves++;
+	moves %= 10;
+	if (moves == 0)
+	{
+		square->AddMonster({ currentX - square->leftlimit,currentY - square->uplimit });
 	}
 }
 

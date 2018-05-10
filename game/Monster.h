@@ -9,6 +9,7 @@ public:
 
 	void Show();
 	void Hurt();
+	void Kill();
 	void MoveTo(int, int);
 
 	bool IsAlive();
