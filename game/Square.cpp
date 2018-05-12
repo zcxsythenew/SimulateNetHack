@@ -158,7 +158,7 @@ Square::Square(const int &x, const int &y, const int &height, const int &width, 
 		int y = rand() % height;
 		if (map[y][x] == '.' && !(5 == y && x == 9))
 		{
-			map[y][x] = rand() > (RAND_MAX / 2) ? '(' : ')';
+			map[y][x] = rand() < (RAND_MAX / 7 * 5) ? '(' : ')';
 		}
 		else
 		{

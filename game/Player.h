@@ -35,6 +35,7 @@ private:
 	void ShowAns();
 	bool CheckPlaceForMonster(Point, Point);
 	void CallMonsters();
+	void operator+=(char chr) { ShowTools(chr); }
 	Square *square;
 	
 };

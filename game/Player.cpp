@@ -144,38 +144,46 @@ void Player::ApplyDagger()
 		switch (c)
 		{
 		case 0: //up
+		case '8':
 			targetX = currentX;
 			targetY = currentY - 1;
 			break;
 		case 1: //down
+		case '2':
 			targetX = currentX;
 			targetY = currentY + 1;
 			break;
 		case 2: //right
+		case '6':
 			targetX = currentX + 1;
 			targetY = currentY;
 			break;
 		case 3: //left
+		case '4':
 			targetX = currentX - 1;
 			targetY = currentY;
 			break;
 		case 'y':
 		case 'Y':
+		case '7':
 			targetX = currentX - 1;
 			targetY = currentY - 1;
 			break;
 		case 'u':
 		case 'U':
+		case '9':
 			targetX = currentX + 1;
 			targetY = currentY - 1;
 			break;
 		case 'b':
 		case 'B':
+		case '1':
 			targetX = currentX - 1;
 			targetY = currentY + 1;
 			break;
 		case 'n':
 		case 'N':
+		case '3':
 			targetX = currentX + 1;
 			targetY = currentY + 1;
 			break;
@@ -203,6 +211,14 @@ void Player::ApplyDagger()
 		}
 		cout << "\033[" << 2 << ";" << 1 << "H";
 		cout << "Monsters not found.          ";
+		cout << "\033[" << currentY << ";" << currentX << "H";
+	}
+	else
+	{
+		cout << "\033[" << 2 << ";" << 1 << "H";
+		cout << "                             ";
+		cout << "\033[" << 2 << ";" << 1 << "H";
+		cout << "You have no dagger. Pick one.";
 		cout << "\033[" << currentY << ";" << currentX << "H";
 	}
 }
@@ -327,7 +343,7 @@ void Player::MoveTo(const int x, const int y)
 		break;
 	case '(':
 	case ')':
-		ShowTools(square->GetMap()[y - square->uplimit][x - square->leftlimit]);
+		*this += (square->GetMap()[y - square->uplimit][x - square->leftlimit]);
 		square->GetMap()[y - square->uplimit][x - square->leftlimit] = '.';
 		ShowPlace(true);
 		currentX = x;

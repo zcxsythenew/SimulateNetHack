@@ -5,7 +5,7 @@
 class Square
 {
 public:
-	Square(const int &, const int &, const int &, const int &, const int & = 20, const int & = 15, const int & = 1, const int & = 100);
+	Square(const int &, const int &, const int &, const int &, const int & = 20, const int & = 15, const int & = 1, const int & = 70);
 	const int uplimit;
 	const int downlimit;
 	const int leftlimit;

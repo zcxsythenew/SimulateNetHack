@@ -29,34 +29,43 @@ void StartGame()
 		switch (c)
 		{
 		case 0: //up
+		case '8':
 			player.MoveUp();
 			break;
 		case 1: //down
+		case '2':
 			player.MoveDown();
 			break;
 		case 2: //right
+		case '6':
 			player.MoveRight();
 			break;
 		case 3: //left
+		case '4':
 			player.MoveLeft();
 			break;
 		case 'y':
 		case 'Y':
+		case '7':
 			player.MoveY();
 			break;
 		case 'u':
 		case 'U':
+		case '9':
 			player.MoveU();
 			break;
 		case 'b':
 		case 'B':
+		case '1':
 			player.MoveB();
 			break;
 		case 'n':
 		case 'N':
+		case '3':
 			player.MoveN();
 			break;
 		case '.':
+		case '5':
 			player.Rest();
 			break;
 		case 'a':
