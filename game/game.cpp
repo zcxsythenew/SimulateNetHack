@@ -11,7 +11,7 @@ void StartGame()
 	Square s(1, 5, 20, 80);
 	Player player;
 	player.Place(10, 10, s);
-	cout << "\033[" << player.GetX() << ";" << player.GetY() << "H";
+	cout << "\033[" << player.GetY() << ";" << player.GetX() << "H";
 	unsigned long long c = 0;
 	while (status == 0)
 	{
@@ -25,7 +25,7 @@ void StartGame()
 				c -= 65;
 			}
 		}
-		cout << "\033[" << player.GetX() << ";" << player.GetY() << "H";
+		cout << "\033[" << player.GetY() << ";" << player.GetX() << "H";
 		switch (c)
 		{
 		case 0: //up
