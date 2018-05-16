@@ -115,7 +115,6 @@ void Initialize()
 
 int main()
 {
-	
 	Initialize();
 	system("stty echo");
     return 0;
