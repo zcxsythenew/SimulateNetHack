@@ -24,7 +24,7 @@ Square::Square(const int &x, const int &y, const int &height, const int &width, 
 		} while (!CheckWallAvailable(x, y));
 		while (rand() > (RAND_MAX) / 100)
 		{
-			direction = rand() % 3;
+			direction = rand() % 4;
 			if (CheckWallAvailable(x, y, direction + 1))
 			{
 				DirectionHelper(x, y, direction + 1);
@@ -32,7 +32,7 @@ Square::Square(const int &x, const int &y, const int &height, const int &width, 
 			}
 			else
 			{
-				direction = rand() % 3;
+				direction = rand() % 4;
 				if (CheckWallAvailable(x, y, direction + 1))
 				{
 					DirectionHelper(x, y, direction + 1);
@@ -40,7 +40,7 @@ Square::Square(const int &x, const int &y, const int &height, const int &width, 
 				}
 				else
 				{
-					direction = rand() % 3;
+					direction = rand() % 4;
 					if (CheckWallAvailable(x, y, direction + 1))
 					{
 						DirectionHelper(x, y, direction + 1);
@@ -48,7 +48,7 @@ Square::Square(const int &x, const int &y, const int &height, const int &width, 
 					}
 					else
 					{
-						direction = rand() % 3;
+						direction = rand() % 4;
 						if (CheckWallAvailable(x, y, direction + 1))
 						{
 							DirectionHelper(x, y, direction + 1);
@@ -56,7 +56,7 @@ Square::Square(const int &x, const int &y, const int &height, const int &width, 
 						}
 						else
 						{
-							direction = rand() % 3;
+							direction = rand() % 4;
 							if (CheckWallAvailable(x, y, direction + 1))
 							{
 								DirectionHelper(x, y, direction + 1);
@@ -64,7 +64,7 @@ Square::Square(const int &x, const int &y, const int &height, const int &width, 
 							}
 							else
 							{
-								direction = rand() % 3;
+								direction = rand() % 4;
 								if (CheckWallAvailable(x, y, direction + 1))
 								{
 									DirectionHelper(x, y, direction + 1);
